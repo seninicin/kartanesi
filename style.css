@@ -1,0 +1,1481 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #050510;
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+#canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* --- BÖLÜM 1 --- */
+#hero-section {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.greeting-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    text-align: center;
+}
+
+.greeting {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 2.8rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.scroll-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.scroll-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.scroll-arrow {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.7);
+    animation: bounce 2s infinite ease-in-out;
+}
+
+.transition-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 2.2rem;
+    color: #fff;
+    opacity: 0;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    text-align: center;
+    width: 100%;
+    padding: 0 20px;
+}
+
+/* --- BÖLÜM 2: ZARFLAR --- */
+.notes-section {
+    position: relative;
+    z-index: 3;
+    width: 100vw;
+    background: #050510;
+    padding: 100px 0;
+}
+
+.timeline-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding-left: 50px;
+}
+
+.timeline-line {
+    position: absolute;
+    left: 20px;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.timeline-progress {
+    position: absolute;
+    left: 20px;
+    top: 0;
+    width: 2px;
+    height: 0%;
+    background: #ffffff;
+    box-shadow: 0 0 10px #ffffff, 0 0 20px #a4b0f5;
+}
+
+.envelope-wrapper {
+    position: relative;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    perspective: 1000px;
+    opacity: 0.3;
+    transition: opacity 0.5s ease;
+}
+
+.envelope-wrapper::before {
+    content: '';
+    position: absolute;
+    left: -36px;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    background: #050510;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    transition: all 0.5s ease;
+}
+
+.envelope-wrapper.active {
+    opacity: 1;
+}
+
+.envelope-wrapper.active::before {
+    background: #ffffff;
+    border-color: #ffffff;
+    box-shadow: 0 0 15px #ffffff;
+}
+
+.envelope {
+    position: relative;
+    width: 320px;
+    height: 200px;
+    background: #1a1a2e;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 160px solid transparent;
+    border-right: 160px solid transparent;
+    border-top: 120px solid #252542;
+    transform-origin: top;
+    transition: transform 0.8s ease;
+    z-index: 4;
+}
+
+.envelope-front {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 160px solid #1f1f35;
+    border-right: 160px solid #1f1f35;
+    border-bottom: 110px solid #16162a;
+    border-top: 90px solid transparent;
+    z-index: 3;
+    border-radius: 0 0 10px 10px;
+}
+
+.letter {
+    position: absolute;
+    bottom: 10px;
+    left: 5%;
+    width: 90%;
+    height: 180px;
+    background: #fdfdfd;
+    border-radius: 5px;
+    padding: 25px 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.letter p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: #2b2b2b;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+.envelope.open .flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+.envelope.open .letter {
+    transform: translateY(-130px);
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-10px);
+    }
+
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* --- MOBİL OPTİMİZASYONU (HAYATİ KISIM) --- */
+@media (max-width: 768px) {
+    .greeting {
+        font-size: 2.2rem;
+    }
+
+    .timeline-container {
+        padding-left: 30px;
+        /* Mobilde soldaki boşluğu azalttık */
+    }
+
+    .timeline-line,
+    .timeline-progress {
+        left: 15px;
+        /* Çizgiyi sola yaklaştırdık */
+    }
+
+    .envelope-wrapper::before {
+        left: -21px;
+        /* Noktayı yeni çizgi pozisyonuna hizaladık */
+        width: 12px;
+        height: 12px;
+    }
+
+    /* Zarfın ölçülerini küçülttük ve border'ları matematikle yeniden hesapladık */
+    .envelope {
+        width: 260px;
+        /* 320'den 260'a düştü */
+        height: 160px;
+    }
+
+    /* 260 / 2 = 130px border genişliği (Taşmayı engeller) */
+    .flap {
+        border-left: 130px solid transparent;
+        border-right: 130px solid transparent;
+        border-top: 100px solid #252542;
+    }
+
+    .envelope-front {
+        border-left: 130px solid #1f1f35;
+        border-right: 130px solid #1f1f35;
+        border-bottom: 90px solid #16162a;
+        border-top: 70px solid transparent;
+    }
+
+    .letter {
+        height: 140px;
+        padding: 15px 10px;
+    }
+
+    .letter p {
+        font-size: 1rem;
+        /* Mobilde taşmasın diye biraz küçüldü */
+    }
+
+    .envelope.open .letter {
+        transform: translateY(-110px);
+        /* Mobilde daha az yukarı çıksın */
+    }
+}
+
+/* --- BÖLÜM 3: IŞILTILI KARANLIK --- */
+#dark-romance-section {
+    position: relative;
+    width: 100vw;
+    background: #050510;
+    /* Karanlığı koruyoruz */
+    padding: 20vh 0 30vh 0;
+    z-index: 4;
+    overflow: hidden;
+}
+
+.romance-container {
+    display: flex;
+    flex-direction: column;
+    gap: 45vh;
+    /* Kaydırdıkça gelmeleri için bol mesafe */
+    padding: 0 30px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.romance-step {
+    position: relative;
+    min-height: 30vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* YAZININ İÇİNDEN GEÇEN IŞIK (UI ŞOVU) */
+.shimmer-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-top: 20px;
+
+    /* Işık efekti için lineer gradient */
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0.1) 0%,
+            /* Sönük sol */
+            rgba(255, 255, 255, 1) 50%,
+            /* Parlak merkez (Işığın ta kendisi) */
+            rgba(255, 255, 255, 0.1) 100%
+            /* Sönük sağ */
+        );
+    background-size: 200% auto;
+    color: transparent;
+    /* Metin rengini saydam yapıp arkaplanı gösteriyoruz */
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    /* JS'in animasyon yapabilmesi için başlangıç pozisyonu */
+    background-position: 200% center;
+    z-index: 2;
+}
+
+/* ZARİF FİGÜRLER VE AURALAR */
+.sparkle {
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    z-index: 2;
+}
+
+.final-sparkle {
+    color: #ff4d6d;
+    /* Final kalbi için tatlı bir kırmızı/pembe */
+    text-shadow: 0 0 30px rgba(255, 77, 109, 0.8);
+    font-size: 2.5rem;
+}
+
+.romantic-aura {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    filter: blur(40px);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.aura-left {
+    left: -50px;
+    background: radial-gradient(circle, rgba(164, 176, 245, 0.15) 0%, rgba(164, 176, 245, 0) 70%);
+}
+
+.aura-right {
+    right: -50px;
+    background: radial-gradient(circle, rgba(255, 218, 185, 0.15) 0%, rgba(255, 218, 185, 0) 70%);
+}
+
+.aura-center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(255, 77, 109, 0.1) 0%, rgba(255, 77, 109, 0) 70%);
+}
+
+@media (max-width: 768px) {
+    .shimmer-text {
+        font-size: 1.6rem;
+    }
+
+    .romance-container {
+        gap: 35vh;
+    }
+
+    .sparkle {
+        font-size: 1.5rem;
+    }
+}
+
+/* --- GEÇİŞ SAHNESİ --- */
+#heart-transition-wrap {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #050510;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.scrolling-heart {
+    position: absolute;
+    font-size: 4rem;
+    color: #ff4d6d;
+    text-shadow: 0 0 30px #ff4d6d;
+    z-index: 1;
+}
+
+.why-title {
+    position: relative;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-style: italic;
+    color: #fff;
+    z-index: 2;
+    opacity: 0;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+/* --- KARTLAR BÖLÜMÜ --- */
+#why-you-section {
+    position: relative;
+    width: 100vw;
+    background: #050510;
+    padding: 80px 15px;
+    z-index: 5;
+}
+
+#subtle-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+.cards-grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Tam istediğin 2-2-2 */
+    gap: 15px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.flip-card {
+    background-color: transparent;
+    width: 100%;
+    aspect-ratio: 0.8;
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+}
+
+.flip-card.is-flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.flip-card-front {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(8px);
+}
+
+.card-num {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.2rem;
+    color: rgba(255, 77, 109, 0.2);
+    margin-bottom: 5px;
+}
+
+.flip-card-front h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.tap-info {
+    font-size: 0.6rem;
+    color: #ff4d6d;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.flip-card-back {
+    background: #111125;
+    transform: rotateY(180deg);
+    border-color: rgba(255, 77, 109, 0.3);
+}
+
+.flip-card-back p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: #e0e0e0;
+    line-height: 1.4;
+    text-align: center;
+}
+
+@media (max-width: 400px) {
+    .why-title {
+        font-size: 2.2rem;
+    }
+
+    .flip-card-back p {
+        font-size: 0.85rem;
+    }
+}
+
+.neon-icon {
+    font-size: 2.8rem;
+    color: #ff4d6d;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 8px rgba(255, 77, 109, 0.6));
+    transition: all 0.3s ease;
+}
+
+.flip-card-front h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: #fff;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Mobilde ikonların çok büyük kalmaması için */
+@media (max-width: 480px) {
+    .neon-icon {
+        font-size: 2.2rem;
+    }
+
+    .flip-card-front h3 {
+        font-size: 1rem;
+    }
+}
+
+/* --- BÖLÜM 5: MODERN ZARF VE NOT TASARIMI --- */
+#final-note-section {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: #0a0a0a;
+    /* Ekran görüntüsündeki derin, koyu gri/siyah arka plan */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+.note-card-container {
+    width: 90%;
+    max-width: 600px;
+    perspective: 1000px;
+}
+
+/* Şık ve Koyu Kart Tasarımı */
+.modern-note-card {
+    position: relative;
+    background: linear-gradient(145deg, #1a1a1a, #121212);
+    /* Koyu degrade */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Çok ince beyaz çerçeve */
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    overflow: hidden;
+    /* Grid hilesi: İki durumu üst üste koyup opacity ile geçiş yapacağız */
+    display: grid;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modern-note-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+}
+
+/* Kapalı ve Açık durumlar grid'in aynı hücresini kaplar */
+.note-state-closed,
+.note-state-opened {
+    grid-area: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 50px 30px;
+    transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s;
+}
+
+/* --- KAPALI DURUM (Zarf) --- */
+.note-state-closed {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.note-icon {
+    font-size: 4rem;
+    color: #cccccc;
+    /* Ekran görüntüsündeki açık gri tonu */
+    margin-bottom: 20px;
+}
+
+.note-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 4px;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.note-hint {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    color: #555555;
+    /* Koyu gri ipucu metni */
+}
+
+/* --- AÇIK DURUM (Yazılar) --- */
+.note-state-opened {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    /* Hafifçe aşağıdan gelsin */
+}
+
+.modern-paragraph {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: #e0e0e0;
+    /* Tam beyaz değil, okuması rahat açık gri */
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.signature-box {
+    width: 100%;
+    text-align: right;
+    margin-top: 10px;
+}
+
+.modern-signature {
+    font-family: 'Great Vibes', cursive;
+    /* Screenshot'taki imza fontu */
+    font-size: 2.4rem;
+    color: #ffffff;
+}
+
+/* --- JAVASCRIPT İLE TETİKLENEN AÇILMA/KAPANMA ANİMASYONU --- */
+.modern-note-card.is-open .note-state-closed {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+}
+
+.modern-note-card.is-open .note-state-opened {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Mobil Optimizasyon */
+@media (max-width: 768px) {
+    .note-icon {
+        font-size: 3rem;
+    }
+
+    .note-title {
+        font-size: 1.2rem;
+    }
+
+    .modern-paragraph {
+        font-size: 1rem;
+    }
+
+    .modern-signature {
+        font-size: 2rem;
+    }
+
+    .note-state-closed,
+    .note-state-opened {
+        padding: 40px 20px;
+    }
+}
+
+/* --- BÖLÜM 6: KAR TANESİ BÖLÜMÜ --- */
+#snowflake-section {
+    position: relative;
+    width: 100vw;
+    min-height: 100vh;
+    /* Siyahtan derin gece mavisine geçiş (Gradient) */
+    background: linear-gradient(to bottom, #0a0a0a 0%, #021124 30%, #001f3f 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 20px;
+    overflow: hidden;
+    z-index: 15;
+}
+
+#snow-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    /* Tıklamaları engellemesin */
+}
+
+.snowflake-container {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    max-width: 800px;
+}
+
+.snow-intro-wrapper {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.playful-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: #b0c4de;
+    /* Açık çelik mavisi/gri */
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.delay-text {
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.snow-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-style: italic;
+    color: #e0ffff;
+    /* Açık buz mavisi */
+    margin-top: 30px;
+    text-shadow: 0 0 20px rgba(224, 255, 255, 0.5);
+}
+
+/* Buzlu Cam (Frosted Glass) Kartlar */
+.ice-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.ice-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    /* Buzlu cam efekti */
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 15px;
+    padding: 30px 20px;
+    text-align: center;
+    transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.ice-card:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 40px rgba(224, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.ice-icon {
+    font-size: 2rem;
+    color: #87cefa;
+    /* Açık gökyüzü mavisi */
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 10px rgba(135, 206, 250, 0.6));
+}
+
+.ice-card h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.ice-card p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #dcdcdc;
+    line-height: 1.5;
+}
+
+/* Mobil Optimizasyon */
+@media (max-width: 768px) {
+    .ice-cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Mobilde alt alta gelsinler */
+    .snow-title {
+        font-size: 2.2rem;
+    }
+
+    .playful-text {
+        font-size: 1rem;
+    }
+}
+
+/* --- BÖLÜM 7: DİLEK FENERİ FİNALİ --- */
+#wish-section {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: #030305;
+    /* En derin, simsiyah gece */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    z-index: 20;
+    transition: background-color 3s ease;
+    /* Gökyüzünün aydınlanma süresi */
+}
+
+/* Dokunulduğunda eklenecek aydınlık gece sınıfı */
+#wish-section.illuminated {
+    background-color: #1a1025;
+    /* Sıcak, mistik bir mor/lacivert gökyüzü */
+}
+
+.wish-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.wish-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    font-style: italic;
+    color: #ffffff;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+    margin-bottom: 25px;
+}
+
+.lantern-trigger {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.3s ease;
+}
+
+.lantern-trigger:hover {
+    transform: scale(1.05);
+}
+
+.trigger-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 5px;
+    color: #ffb067;
+    text-transform: uppercase;
+    text-shadow: 0 0 15px rgba(255, 176, 103, 0.6);
+}
+
+.trigger-hint {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: #888888;
+    font-style: italic;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+}
+
+/* Gökyüzü ve Alt Parıltı */
+#lantern-sky {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.sky-glow {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background: linear-gradient(to top, rgba(255, 140, 0, 0.15), transparent);
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 3s ease;
+    /* Işığın yumuşakça belirmesi */
+}
+
+/* CSS Dilek Feneri */
+.lantern {
+    position: absolute;
+    bottom: -100px;
+    width: 35px;
+    height: 55px;
+    background: radial-gradient(circle at 50% 80%, #ffeaa7 0%, #ff9d00 60%, #cc4400 100%);
+    border-radius: 12px 12px 8px 8px;
+    box-shadow: 0 0 20px #ff7b00, 0 0 40px rgba(255, 123, 0, 0.4), inset 0 -5px 15px #ffffff;
+    opacity: 0;
+}
+
+.lantern::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 4px;
+    background: #3e1c00;
+    border-radius: 2px;
+}
+
+.lantern-flame {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff, 0 0 20px #ffcf70;
+    animation: flameFlicker 0.4s infinite alternate;
+}
+
+@keyframes flameFlicker {
+    0% {
+        transform: translateX(-50%) scale(1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateX(-50%) scale(1.1);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .wish-title {
+        font-size: 3.5rem;
+    }
+
+    .trigger-text {
+        font-size: 1rem;
+    }
+}
+
+/* --- SECTION 6: DİLEK FENERLERİ (LANTERNS) --- */
+.lanterns-section {
+    min-height: 100vh;
+    position: relative;
+    background: linear-gradient(to bottom, #050505 0%, #1a0b00 100%);
+    /* Hafif turuncuya çalan siyah */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    z-index: 19;
+}
+
+.lanterns-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+}
+
+.lantern-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    color: #ffd700;
+    margin-bottom: 40px;
+    font-weight: 300;
+}
+
+/* Dilek Butonu */
+.wish-btn {
+    background: transparent;
+    border: 2px solid #ffd700;
+    color: #ffd700;
+    padding: 15px 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.wish-btn:hover,
+.wish-btn:active {
+    background: #ffd700;
+    color: #000;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+    transform: scale(1.05);
+}
+
+.tap-hint-gold {
+    margin-top: 15px;
+    font-size: 0.8rem;
+    color: rgba(255, 215, 0, 0.6);
+    font-style: italic;
+    animation: blink 2s infinite;
+}
+
+/* --- FENER TASARIMI --- */
+.lanterns-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* Tıklamayı engellemesin */
+    z-index: 5;
+}
+
+.lantern {
+    position: absolute;
+    bottom: -100px;
+    /* Ekranın altından başlar */
+    width: 30px;
+    height: 45px;
+    background: radial-gradient(circle, #ffeb3b, #ff9800);
+    /* Sarıdan turuncuya */
+    border-radius: 5px 5px 15px 15px;
+    box-shadow: 0 0 20px #ff9800, 0 0 40px #ff5722;
+    /* Güçlü Glow */
+    opacity: 0.9;
+    animation: floatUp linear forwards;
+    /* Yukarı çıkma animasyonu */
+}
+
+/* Fenerin altındaki küçük ateş */
+.lantern::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 5px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(0.5) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-120vh) scale(1) rotate(10deg);
+        opacity: 0;
+    }
+
+    /* Ekranın tepesinden çıkıp kaybolsun */
+}
+
+/* Google Fonts (Eğer projende yoksa CSS'in en üstüne ekle) */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Montserrat:wght@300;400;500&display=swap');
+
+/* --- SECTION 6: DİLEK FENERLERİ (LANTERNS) --- */
+.lanterns-section {
+    min-height: 100vh;
+    position: relative;
+    background: linear-gradient(to bottom, #050505 0%, #1a0b00 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    z-index: 19;
+}
+
+.lanterns-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Başlık: Daha zarif ve asil */
+.section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    color: #ffffff;
+    /* Ekran görüntüsündeki gibi beyaz */
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+/* Alt Başlık: Temiz ve okunaklı */
+.lantern-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    color: #ffd700;
+    /* Altın sarısı */
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin-bottom: 40px;
+}
+
+/* Dilek Butonu: Premium Glow Efekti */
+.wish-btn {
+    background: rgba(0, 0, 0, 0.5);
+    /* İçi hafif şeffaf siyah */
+    border: 2px solid #ffd700;
+    color: #ffd700;
+    padding: 15px 45px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2), inset 0 0 10px rgba(255, 215, 0, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    backdrop-filter: blur(5px);
+}
+
+.wish-btn i {
+    font-size: 1.2rem;
+}
+
+/* Hover ve Aktif (Tıklanma) Durumu */
+.wish-btn:hover,
+.wish-btn.active {
+    background: #ffd700;
+    color: #111;
+    /* Siyah metin */
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.5);
+    transform: translateY(-3px);
+    /* Büyümek yerine hafifçe yukarı kalkar */
+}
+
+/* İpucu Metni: Şiirsel italik font */
+.tap-hint-gold {
+    font-family: 'Cormorant Garamond', serif;
+    margin-top: 20px;
+    font-size: 1.1rem;
+    color: rgba(255, 215, 0, 0.8);
+    font-style: italic;
+    letter-spacing: 1px;
+    animation: pulseHint 2s infinite alternate;
+}
+
+@keyframes pulseHint {
+    0% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    }
+}
+
+/* --- FENER TASARIMI (Senin kodun, sadece parlaması yumuşatıldı) --- */
+.lanterns-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.lantern {
+    position: absolute;
+    bottom: -100px;
+    width: 30px;
+    height: 45px;
+    background: radial-gradient(circle at 50% 80%, #ffeb3b, #ff9800, #e65100);
+    border-radius: 8px 8px 15px 15px;
+    box-shadow: 0 0 20px #ff9800, 0 0 40px rgba(255, 87, 34, 0.6);
+    opacity: 0.9;
+    animation: floatUp linear forwards;
+}
+
+.lantern::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff, 0 0 20px #ffeb3b;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(0.5) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-120vh) scale(1) rotate(15deg);
+        opacity: 0;
+    }
+}
+
+/* Aşağı Kaydırma Oku */
+.scroll-indicator {
+    color: rgba(255, 215, 0, 0.7);
+    font-size: 1.8rem;
+    cursor: pointer;
+    animation: bounce 2s infinite ease-in-out;
+    transition: color 0.3s;
+}
+
+.scroll-indicator:hover {
+    color: #ffd700;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(10px);
+    }
+}
+
+/* Mobil için boyutlandırma */
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2.8rem;
+    }
+
+    .lantern-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .wish-btn {
+        padding: 12px 35px;
+        font-size: 1rem;
+    }
+}
+
+/* --- FOOTER (ROMANTİK KAPANIŞ) --- */
+.romantic-footer {
+    position: relative;
+    width: 100vw;
+    background-color: #030305;
+    /* Sitenin sonundaki en derin karanlık */
+    padding: 80px 20px 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    /* Çok ince, zarif bir sınır çizgisi */
+}
+
+.footer-content {
+    max-width: 600px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Kapanış Sözü */
+.final-whisper {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: #e0e0e0;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+/* Zarif Ayırıcı */
+.footer-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    width: 80%;
+    margin-bottom: 30px;
+}
+
+.divider-line {
+    height: 1px;
+    flex-grow: 1;
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0) 0%, rgba(255, 215, 0, 0.3) 50%, rgba(255, 215, 0, 0) 100%);
+}
+
+.pulsing-snowflake {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    animation: pulseSnowflake 3s infinite alternate ease-in-out;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+}
+
+@keyframes pulseSnowflake {
+    0% {
+        transform: scale(0.9) rotate(0deg);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: scale(1.1) rotate(15deg);
+        opacity: 1;
+        text-shadow: 0 0 15px #fff;
+    }
+}
+
+/* İmza Alanı */
+.footer-signature-box {
+    margin-bottom: 40px;
+}
+
+.made-with-love {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: #888888;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.footer-name {
+    /* Eğer projende Great Vibes yüklü değilse, @import ile eklemeyi unutma */
+    font-family: 'Great Vibes', cursive;
+    font-size: 3rem;
+    color: #ffd700;
+    /* Asil bir altın sarısı */
+    font-weight: 400;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    letter-spacing: 2px;
+}
+
+/* Tarih / Telif */
+.footer-date {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    color: #444444;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+/* Mobil Uyumluluk */
+@media (max-width: 768px) {
+    .final-whisper {
+        font-size: 1.2rem;
+    }
+
+    .footer-name {
+        font-size: 2.5rem;
+    }
+
+    .romantic-footer {
+        padding: 60px 20px 30px 20px;
+    }
+}

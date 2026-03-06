@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sana Özel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤍</text></svg>">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Montserrat:wght@300&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="canvas-container"></div>
+
+    <section id="hero-section">
+        <div class="greeting-content">
+            <h1 class="greeting">Hoş geldin kar tanesi</h1>
+            <div class="scroll-prompt">
+                <span class="scroll-text">Kaydır</span>
+                <div class="scroll-arrow">↓</div>
+            </div>
+        </div>
+        <h2 class="transition-text">Sana notlarım var...</h2>
+    </section>
+
+    <section class="notes-section">
+        <div class="timeline-container">
+            <div class="timeline-line"></div>
+            <div class="timeline-progress"></div>
+
+            <div class="envelope-wrapper">
+                <div class="envelope">
+                    <div class="flap"></div>
+                    <div class="letter">
+                        <p>Bazı vedalar, içinde kocaman bir teşekkür barındırır. Hayatıma kattığın her eşsiz güzellik
+                            için teşekkür ederim.</p>
+                    </div>
+                    <div class="envelope-front"></div>
+                </div>
+            </div>
+
+            <div class="envelope-wrapper">
+                <div class="envelope">
+                    <div class="flap"></div>
+                    <div class="letter">
+                        <p>Seninle paylaşılan zamanlar, tıpkı bu gece süzülen kar taneleri gibi saf, benzersiz ve akılda
+                            kalıcıydı.</p>
+                    </div>
+                    <div class="envelope-front"></div>
+                </div>
+            </div>
+
+            <div class="envelope-wrapper">
+                <div class="envelope">
+                    <div class="flap"></div>
+                    <div class="letter">
+                        <p>Yollarımız kendi yönüne akıyor olsa da, yüzündeki o güzel gülümseme hiç solmasın. Hep en
+                            iyisini hak ediyorsun.</p>
+                    </div>
+                    <div class="envelope-front"></div>
+                </div>
+            </div>
+
+            <div class="envelope-wrapper">
+                <div class="envelope">
+                    <div class="flap"></div>
+                    <div class="letter">
+                        <p>Kendine çok iyi bak, dünyanın en narin kar tanesi... Bu bir son değil, senin için muhteşem
+                            bir hayatın başlangıcı olsun.</p>
+                    </div>
+                    <div class="envelope-front"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="dark-romance-section">
+        <div class="romance-container">
+
+            <div class="romance-step">
+                <div class="romantic-aura aura-left"></div>
+                <div class="sparkle">✦</div>
+                <p class="shimmer-text">Seni tanımadan önce kelimelerim daha eksik, dünyam biraz daha sıradandı...</p>
+            </div>
+
+            <div class="romance-step">
+                <div class="romantic-aura aura-right"></div>
+                <div class="sparkle">✧</div>
+                <p class="shimmer-text">Sonra sen geldin. Sadece bir gülüşünle içimdeki en fırtınalı denizleri
+                    durulttun.</p>
+            </div>
+
+            <div class="romance-step">
+                <div class="romantic-aura aura-left"></div>
+                <div class="sparkle">✦</div>
+                <p class="shimmer-text">Bana kattıklarınla beni daha anlayan, daha derin ve hayata daha zarif bakan biri
+                    yaptın.</p>
+            </div>
+
+            <div class="romance-step">
+                <div class="romantic-aura aura-center"></div>
+                <div class="sparkle final-sparkle">♥</div>
+                <p class="shimmer-text">Ruhumda açtırdığın bu aydınlık, hayatım boyunca en nadide yerde kalacak.</p>
+            </div>
+
+        </div>
+    </section>
+    <section id="heart-transition-wrap">
+        <div class="scrolling-heart">♥</div>
+        <h2 class="why-title">Peki Neden Sen?</h2>
+    </section>
+
+    <section id="why-you-section">
+        <canvas id="subtle-canvas"></canvas>
+        <div class="cards-grid">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fa-solid fa-shield-halved neon-icon"></i>
+                        <h3>Karakterin</h3>
+                        <p class="tap-info">Dokun ✦</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Sarsılmaz ve güçlü karakterin... Her türlü zorluğa ve çektiğin üzüntüye rağmen eğilmeyen o
+                            asil ruhun bana her zaman en büyük ilham kaynağı oldu.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fa-solid fa-crown neon-icon"></i>
+                        <h3>Duruşun</h3>
+                        <p class="tap-info">Dokun ✦</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Karakterinden asla ödün vermeyen, neysen o olan dürüstlüğün... Kimseye benzemeye çalışmadan,
+                            kendi doğrularınla dimdik duruşun seni dünyadaki herkesten ayırıyor.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fa-solid fa-dove neon-icon"></i>
+                        <h3>Merhametin</h3>
+                        <p class="tap-info">Dokun ✦</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Sana kötülük yapana bile kin tutamayan o uçsuz bucaksız merhametin... Kalbinin her defasında
+                            beni hayran bırakan bu saflığı, senin en güzel hazinen.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fa-solid fa-gem neon-icon"></i>
+                        <h3>Varlığın</h3>
+                        <p class="tap-info">Dokun ✦</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Varlığınla hayatıma dokunman, sadece nefes alıyor olman bile bana güç veriyor. Sen benim en
+                            karanlık yollarımda yolumu aydınlatan nadide bir ışıksın.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fa-solid fa-music neon-icon"></i>
+                        <h3>Sesin</h3>
+                        <p class="tap-info">Dokun ✦</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Dünyadaki en güzel melodi, ruhumu dinlendiren en özel şarkı... Sesin, huzuru kalbime işleyen
+                            eşsiz bir tını benim için.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fa-solid fa-face-smile-beam neon-icon"></i>
+                        <h3>Gülüşün</h3>
+                        <p class="tap-info">Dokun ✦</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>O güzel gülüşün için kelimeler yetersiz... Seni güldürmek hayattaki en büyük zaferim ve en
+                            huzurlu anım. Gülüşün benim dünyamın güneşi.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="final-note-section">
+
+        <div class="note-card-container">
+            <div class="modern-note-card" id="finalNoteCard">
+
+                <div class="note-state-closed">
+                    <i class="fa-solid fa-envelope-open-text note-icon"></i>
+                    <h2 class="note-title">SANA BİR NOT...</h2>
+                    <span class="note-hint">(Okumak için dokun)</span>
+                </div>
+
+                <div class="note-state-opened">
+                    <p class="modern-paragraph">"Bu site, satırlara sığdıramadığım, kodlarla anlatmaya çalıştığım
+                        sevgimin sadece küçük bir yansıması.</p>
+                    <p class="modern-paragraph">Her Güzel Şeyin Sonu Olur Hep Bu Acımasız Dünyada. Her Şey İçin
+                        Teşekkürler"</p>
+
+                    <div class="signature-box">
+                        <span class="modern-signature">- Seni çok seven, Aziz.</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section id="snowflake-section">
+        <canvas id="snow-canvas"></canvas>
+
+        <div class="snowflake-container">
+            <div class="snow-intro-wrapper">
+                <p class="playful-text">Bunu sana hep söyledim, belki biraz bıktırdım biliyorum...</p>
+                <p class="playful-text delay-text">Ama bu siteye koymazsam olmazdı. :)</p>
+                <h2 class="snow-title">Neden "Kar Tanesi"? ❄️</h2>
+            </div>
+
+            <div class="ice-cards-grid">
+
+                <div class="ice-card">
+                    <div class="ice-icon"><i class="fa-solid fa-wind"></i></div>
+                    <h3>Zarafet</h3>
+                    <p>Gökyüzünden süzülürken sergilediği o narin dans gibi, senin de her hareketinde, her gülüşünde
+                        büyüleyici bir zarafet var.</p>
+                </div>
+
+                <div class="ice-card">
+                    <div class="ice-icon"><i class="fa-solid fa-fingerprint"></i></div>
+                    <h3>Eşsizlik</h3>
+                    <p>Yeryüzüne düşen milyonlarca kar tanesinin hiçbiri birbirine benzemez. Tıpkı senin bu dünyada bir
+                        eşinin daha olmaması gibi.</p>
+                </div>
+
+                <div class="ice-card">
+                    <div class="ice-icon"><i class="fa-solid fa-star-and-crescent"></i></div>
+                    <h3>Mucize</h3>
+                    <p>Buz gibi soğuk bir kış gününde bile insanın içini ısıtmayı başaran, gökyüzünün yeryüzüne sunduğu
+                        en güzel mucizesin.</p>
+                </div>
+
+                <div class="ice-card">
+                    <div class="ice-icon"><i class="fa-solid fa-droplet"></i></div>
+                    <h3>Saf Güzellik</h3>
+                    <p>Dokunmaya bile kıyamadığın o bembeyaz saflık... Senin kalbinin güzelliği ve niyetinin temizliği
+                        de tam olarak böyle.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section id="lanterns-section" class="lanterns-section">
+
+        <div class="lanterns-content">
+            <h2 class="section-title gold-text">Teşekkürler</h2>
+            <p class="lantern-subtitle">Her dilek,senin gülmen için bir sebep olsun</p>
+
+            <button class="wish-btn" id="wishBtn">
+                <i class="fas fa-paper-plane"></i> Bir Dilek Tut
+            </button>
+
+            <p class="tap-hint-gold">(Butona dokun ve gökyüzünü aydınlat)</p>
+        </div>
+
+        <div id="lanterns-container" class="lanterns-container"></div>
+
+        <div class="scroll-indicator" style="margin-top: 50px; z-index: 10;"
+            onclick="document.getElementById('marquee-message').scrollIntoView();">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+
+    </section>
+
+    <footer class="romantic-footer">
+        <div class="footer-content">
+            <p class="final-whisper">"Bazı hikayeler bitmez, sadece en güzel anılara dönüşüp gökyüzüne karışır..."</p>
+
+            <div class="footer-divider">
+                <span class="divider-line"></span>
+                <i class="fa-regular fa-snowflake pulsing-snowflake"></i>
+                <span class="divider-line"></span>
+            </div>
+
+            <div class="footer-signature-box">
+                <p class="made-with-love">Bu satırlar kodlarla değil, kalple yazıldı.</p>
+
+            </div>
+
+            <p class="footer-date">Sonsuz teşekkürlerle... &copy; 2026</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
