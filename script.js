@@ -381,3 +381,130 @@ function createLantern() {
     lanternsContainer.appendChild(lantern);
     setTimeout(() => { if (lantern.parentNode) lantern.parentNode.removeChild(lantern); }, duration * 1000);
 }
+// ==========================================
+// 1. ÇİKOLATA YAĞMURU (Canvas Particle System)
+// ==========================================
+const canvas = document.getElementById('chocolate-canvas');
+const ctx = canvas.getContext('2d');
+
+// Canvas boyutunu ekran boyutuna eşitle
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+
+// Ekran boyutu değiştiğinde canvas'ı güncelle (Responsive)
+window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    initParticles(); // Parçacıkları yeni boyuta göre yeniden dağıt
+});
+
+const particles = [];
+const particleCount = 10; // Çikolata yoğunluğu (Performans için ideal sayı)
+
+class ChocolateParticle {
+    constructor() {
+        this.init();
+        // Sayfa ilk yüklendiğinde hepsi yukarıdan başlamasın, ekrana dağılsın
+        this.y = Math.random() * height;
+    }
+
+    init() {
+        this.x = Math.random() * width;
+        this.y = -50; // Ekranın hemen üstünden başla
+        this.speed = 1.5 + Math.random() * 2.5; // Düşüş hızı varyasyonu
+        this.size = 6 + Math.random() * 12; // Boyut varyasyonu
+        // İki farklı çikolata tonu (Sütlü ve Bitter)
+        this.color = Math.random() > 0.5 ? '#5d4037' : '#3e2723';
+        this.angle = Math.random() * Math.PI * 2; // Başlangıç açısı
+        this.spin = (Math.random() - 0.5) * 0.08; // Kendi etrafında dönme hızı ve yönü
+    }
+
+    update() {
+        this.y += this.speed;
+        this.angle += this.spin;
+
+        // Ekranın altına ulaştığında (gözden kaybolduğunda) yukarıdan tekrar başlat
+        if (this.y > height + 50) {
+            this.init();
+        }
+    }
+
+    draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.fillStyle = this.color;
+        // Çikolata parçacığını çiz (hafif yuvarlatılmış kare hissi)
+        ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+        ctx.restore();
+    }
+}
+
+function initParticles() {
+    particles.length = 0; // Diziyi sıfırla
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new ChocolateParticle());
+    }
+}
+
+// 60FPS Animasyon Döngüsü
+function animateParticles() {
+    ctx.clearRect(0, 0, width, height); // Her karede ekranı temizle
+    for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+    }
+    requestAnimationFrame(animateParticles); // Döngüyü sürdür
+}
+
+// Yağmuru başlat
+initParticles();
+animateParticles();
+
+
+// ==========================================
+// 2. ETKİLEŞİM, MUMLAR VE MEKTUP AÇILMASI
+// ==========================================
+let totalCandles = 0;
+let candlesBlown = 0;
+
+// Sayfa yüklendiğinde kaç mum olduğunu say
+document.addEventListener('DOMContentLoaded', () => {
+    totalCandles = document.querySelectorAll('.candle-detailed').length;
+});
+
+// HTML'den onclick ile tetiklenen fonksiyon
+function blowOut(candleElement) {
+    const flame = candleElement.querySelector('.flame-detailed');
+
+    // Eğer o mum henüz sönmediyse (out sınıfı yoksa)
+    if (!flame.classList.contains('out')) {
+        flame.classList.add('out'); // Alevi söndür (CSS animasyonunu tetikler)
+        candlesBlown++; // Sönen mum sayısını artır
+
+        // Tüm mumlar söndüyse final sahnesine geç
+        if (candlesBlown === totalCandles) {
+            setTimeout(revealLetter, 900); // Mektubu getirmeden önce alevin sönmesi için kısa bir es
+        }
+    }
+}
+
+// Pastayı gizleyip mektubu çıkaran fonksiyon
+function revealLetter() {
+    const stageContent = document.getElementById('stage-content');
+    const letterContainer = document.getElementById('letter-container');
+
+    // Pastayı ve ana içeriği CSS sınıfı ile yavaşça gizle (aşağı kayarak kaybolur)
+    stageContent.classList.add('hidden-stage');
+
+    setTimeout(() => {
+        // Display none/block geçişini yap (Tarayıcı render'ı için)
+        letterContainer.style.display = 'block';
+
+        // CSS Transition'ın çalışması için çok kısa bir an bekle ve open sınıfını ekle
+        setTimeout(() => {
+            letterContainer.classList.add('open'); // Parşömeni ekranda büyüt
+        }, 50);
+
+    }, 800); // Pastanın kaybolma süresine paralel bir gecikme
+}

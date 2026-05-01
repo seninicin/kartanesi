@@ -296,6 +296,56 @@
         </div>
 
     </section>
+    <section id="birthday-stage">
+        <!-- Arka Plan Çikolata Yağmuru (UI önceliği) -->
+        <canvas id="chocolate-canvas"></canvas>
+
+        <div class="stage-content" id="stage-content">
+            <h2 id="instruction-text">Dileğini tut ve mumları söndürmek için üzerlerine tıkla! 🎂</h2>
+
+            <!-- İKİ KATLI VE DETAYLI PASTA -->
+            <div id="cake-container">
+                <div class="cake-two-story">
+                    <!-- Üst Kat ve Mumlar -->
+                    <div class="cake-layer-top">
+                        <div class="candle-container">
+                            <div class="candle-detailed" onclick="blowOut(this)">
+                                <div class="flame-detailed"></div>
+                            </div>
+                            <div class="candle-detailed" onclick="blowOut(this)">
+                                <div class="flame-detailed"></div>
+                            </div>
+                            <div class="candle-detailed" onclick="blowOut(this)">
+                                <div class="flame-detailed"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Alt Kat -->
+                    <div class="cake-layer-bottom"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AÇILAN PARŞÖMEN MEKTUP PARÇASI (Başlangıçta Gizli) -->
+        <div id="letter-container">
+            <div class="letter-content" id="uzun-yazi-alani">
+
+
+                <blockquote style="border-left: 3px solid #d32f2f; padding-left: 15px; margin-left: 0;">
+                    <p>"Geçmişe bakan geleceği göremez, geleceği göremeyen ilerleyemez.</p>
+                    <p>Hayatında hep emin adımlar ile ilerle; geleceğini oluşturacak her yeni günün, bir önceki günden
+                        daha güzel, uygun ve seni mutlu edecek şekilde olsun. Yüzündeki gülümsemen hiçbir zaman
+                        solmasın."</p>
+                </blockquote>
+
+                <br>
+                <p>O gün bana umut olan bu kelimelerle, bugün senin kendi geleceğine ve yeni yaşına ışık tutmak istedim.
+                    Dilerim ki bu yaşın sana hep mutluluk getirir.</p>
+
+                <h3 style="color: #d32f2f; margin-top: 30px;">Doğum günün kutlu olsun! 🎂</h3>
+            </div>
+        </div>
+    </section>
 
     <footer class="romantic-footer">
         <div class="footer-content">
@@ -322,6 +372,4 @@
     <script src="script.js"></script>
 </body>
 
-
 </html>
-
